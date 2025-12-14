@@ -1,34 +1,31 @@
-<p>Welcome to {{ hotelName }}</p>
-
+<!-- <p>Welcome to {{ hotelName }}</p> -->
+<hinv-header></hinv-header>
 <div [hidden]="hideRooms">
   Number of Rooms:
-  <div [innerText]="numberOfRooms"></div>
+  <div
+    [innerText]="numberOfRooms"
+    [ngStyle]="{ color: rooms.availableRooms > 0 ? 'green' : 'red' }"
+  ></div>
 </div>
-<ng-template></ng-template>
 
 {{ rooms?.availableRooms ?? 'No rooms' }}
 
-@if(rooms.availableRooms>0){
-<div>Rooms List</div>
-<table>
-  <tr>
-    <th>Room Number</th>
-    <th>Room Type</th>
-    <th>Room Amenities</th>
-    <th>Room Price</th>
-    <th>Photos</th>
-    <th>Checkin Time</th>
-    <th>Checkout Time</th>
-  </tr>
-  @for(){
-  <tr></tr>
-  {{
-    roomList[i]
-  }}
-  }
-</table>
-<!-- 
- -->
+@if(selectedRoom){
+<div>
+  {{ selectedRoom | json }}
+</div>
+}
+<div>
+  <button (click)="addRoom()">Add Room</button>
+</div>
+<!-- {{ roomList | json }} JSON Pipe to display objects -->
+
+@if(hideRooms){
+<hinv-rooms-list
+  [rooms]="roomList"
+  [title]="title"
+  (selectedRoom)="selectRoom($event)"
+></hinv-rooms-list>
 
 }
 
