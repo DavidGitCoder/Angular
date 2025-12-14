@@ -8,6 +8,7 @@ import {
   SkipSelf,
   ViewChild,
   ViewChildren,
+  Self,
 } from '@angular/core';
 import { Room, RoomList } from './iRooms';
 import { RoomsListComponent } from './rooms-list/rooms-list';
@@ -21,6 +22,7 @@ import { RoomsService } from './services/rooms';
   imports: [RoomsListComponent, CommonModule, Header],
   templateUrl: './rooms.html',
   styleUrl: './rooms.scss',
+  // providers: [RoomsService], >-- used for an instance for that component, leave it out if you only need a single instance at the root
 })
 export class RoomsComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
   hotelName = 'Hilton Hotel';
@@ -41,7 +43,7 @@ export class RoomsComponent implements OnInit, AfterViewInit, AfterViewChecked, 
   @ViewChild(Header, { static: true }) headerComponent!: Header;
   // @ViewChildren(Header) headerChildrenComponent!: QueryList<Header>;
 
-  constructor(@SkipSelf() private roomsService: RoomsService) {}
+  constructor(private roomsService: RoomsService) {}
 
   ngOnDestroy(): void {
     console.log('Rooms: OnDestroy is called!!!!!');

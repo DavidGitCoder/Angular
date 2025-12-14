@@ -6,13 +6,11 @@ import { RoomsService } from '../rooms/services/rooms';
   imports: [],
   templateUrl: './employee.html',
   styleUrl: './employee.scss',
-  providers: [RoomsService],
+  // providers: [RoomsService],
 })
 export class Employee implements AfterContentInit, OnInit {
-  constructor(@Self() private roomsService: RoomsService) {}
-  ngOnInit(): void {
-    this.roomsService.getRooms;
-  }
+  constructor(private roomsService: RoomsService) {}
+  ngOnInit(): void {}
   empName: string = 'John';
 
   ngAfterContentInit(): void {
