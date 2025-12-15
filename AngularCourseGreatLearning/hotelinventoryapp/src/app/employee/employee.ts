@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, OnInit, Self } from '@angular/core';
+import { AfterContentInit, Component, OnInit, Self, SkipSelf } from '@angular/core';
 import { RoomsService } from '../rooms/services/rooms';
 
 @Component({
@@ -6,10 +6,10 @@ import { RoomsService } from '../rooms/services/rooms';
   imports: [],
   templateUrl: './employee.html',
   styleUrl: './employee.scss',
-  // providers: [RoomsService],
+  // providers: [RoomsService], --> use resolution modifier: @Self
 })
 export class Employee implements AfterContentInit, OnInit {
-  constructor(private roomsService: RoomsService) {}
+  constructor(@SkipSelf() private roomsService: RoomsService) {}
   ngOnInit(): void {}
   empName: string = 'John';
 

@@ -53,8 +53,8 @@ export class RoomsService {
       rating: 3.5,
     },
   ];
-  constructor() {
-    // console.log(config.apiEndpoint);
+  constructor(@Inject(APP_SERVICE_CONFIG) private config: AppConfig) {
+    console.log(this.config.apiEndpoint);
     console.log('Rooms Service intialized...');
   }
   getRooms(): RoomList[] {

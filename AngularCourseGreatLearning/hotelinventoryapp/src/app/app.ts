@@ -20,6 +20,7 @@ import { Logger } from './logger';
 import { APP_CONFIG, APP_SERVICE_CONFIG } from './AppConfig/appconfig.service';
 import { localStorageToken } from './localstorage.token';
 import { sessionStorageToken } from './sessionstorage.token';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 registerLocaleData(localeFr);
 
 @Component({
