@@ -2,62 +2,36 @@ import { Inject, Injectable } from '@angular/core';
 import { RoomList } from '../iRooms';
 import { AppConfig } from '../../AppConfig/appconfig.interface';
 import { APP_SERVICE_CONFIG } from '../../AppConfig/appconfig.service';
+import { HttpClient, HttpRequest } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RoomsService {
-  roomList: RoomList[] = [
-    {
-      roomNumber: 1,
-      roomType: 'Deluxe Room',
-      amenities: 'A/C, Free Wi-Fi, TV, Bathroom, Kitchen, Sauna',
-      price: 500,
-      photos:
-        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/f8/a3/5e/guest-room.jpg?w=1400&h=-1&s=1',
-      checkinTime: new Date('11-Dec-2025'),
-      checkoutTime: new Date('12-Dec-2025'),
-      rating: 4,
-    },
-    {
-      roomNumber: 2,
-      roomType: 'Luxury Room',
-      amenities: 'Room Service, Spa, A/C, Free Wi-Fi, TV, Bathroom, Kitchen, Terrace, Bar',
-      price: 1000,
-      photos:
-        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/f8/a3/5e/guest-room.jpg?w=1400&h=-1&s=1',
-      checkinTime: new Date('11-Dec-2025'),
-      checkoutTime: new Date('12-Dec-2025'),
-      rating: 5,
-    },
-    {
-      roomNumber: 3,
-      roomType: 'Private Suite',
-      amenities: 'Personal Chef, A/C, Free Wi-Fi, TV, Bathroom, Kitchen, Sauna',
-      price: 15000,
-      photos:
-        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/f8/a3/5e/guest-room.jpg?w=1400&h=-1&s=1',
-      checkinTime: new Date('11-Dec-2025'),
-      checkoutTime: new Date('12-Dec-2025'),
-      rating: 5,
-    },
-    {
-      roomNumber: 4,
-      roomType: 'Standard Room',
-      amenities: 'A/C, Free Wi-Fi, TV, Bathroom',
-      price: 150,
-      photos:
-        'https://dynamic-media-cdn.tripadvisor.com/media/photo-o/2f/f8/a3/5e/guest-room.jpg?w=1400&h=-1&s=1',
-      checkinTime: new Date('11-Dec-2025'),
-      checkoutTime: new Date('12-Dec-2025'),
-      rating: 3.5,
-    },
-  ];
-  constructor(@Inject(APP_SERVICE_CONFIG) private config: AppConfig) {
-    console.log(this.config.apiEndpoint);
+  roomList: RoomList[] = [];
+
+  constructor(@Inject(APP_SERVICE_CONFIG) private config: AppConfig, private http: HttpClient) {
+    // console.log(this.config.apiEndpoint);
     console.log('Rooms Service intialized...');
   }
-  getRooms(): RoomList[] {
-    return this.roomList;
+
+  getRooms() {
+    return this.http.get<RoomList[]>('/api/rooms');
+  }
+  addRoom(room: RoomList) {
+    return this.http.post<RoomList[]>('api/rooms', room);
+  }
+  updateRoom(room: RoomList) {
+    return this.http.put<RoomList[]>(`api/rooms/${room.roomNumber}`, room);
+  }
+  deleteRoom(roomNumber: string) {
+    return this.http.delete<RoomList[]>(`api/rooms/${roomNumber}`);
+  }
+  //example of a http request
+  getPhotos() {
+    const request = new HttpRequest('GET', `https://jsonplaceholder.typicode.com/photos`, {
+      reportProgress: true,
+    });
+    return this.http.request(request);
   }
 }

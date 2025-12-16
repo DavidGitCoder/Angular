@@ -7,12 +7,13 @@ import { RoomsService } from '../rooms/services/rooms';
   imports: [],
   templateUrl: './container.html',
   styleUrl: './container.scss',
-  providers: [RoomsService],
+  // providers: [RoomsService],
 })
 export class Container implements OnInit, AfterContentInit {
   @ContentChild(Employee) employeeComponent!: Employee;
 
-  constructor(@Host() private roomsService: RoomsService) {}
+  // constructor(@Host() private roomsService: RoomsService) {}
+  constructor() {}
 
   ngAfterContentInit(): void {
     console.log('aftercontentinit in container');

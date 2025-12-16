@@ -68,6 +68,7 @@ export class RoomsService {
   }
 
   remove(id: string) {
-    return this.rooms.filter((room) => room.roomNumber !== id);
+    this.rooms = this.rooms.filter((room) => room.roomNumber !== id);
+    return this.rooms;
   }
 }

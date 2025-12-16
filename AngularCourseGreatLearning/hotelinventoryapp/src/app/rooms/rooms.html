@@ -18,11 +18,12 @@
 <div>
   <button (click)="addRoom()">Add Room</button>
 </div>
+
 <!-- {{ roomList | json }} JSON Pipe to display objects -->
 
 @if(hideRooms){
 <hinv-rooms-list
-  [rooms]="roomList"
+  [rooms]="roomList()"
   [title]="title"
   (selectedRoom)="selectRoom($event)"
 ></hinv-rooms-list>
@@ -30,3 +31,8 @@
 }
 
 <button (click)="toggle()">Toggle</button>
+<div>
+  <button (click)="updateRoom()">Update Room</button>
+  <button (click)="deleteRoom()">Delete Room</button>
+  <h1>{{ this.totalBytes() }} loaded</h1>
+</div>
