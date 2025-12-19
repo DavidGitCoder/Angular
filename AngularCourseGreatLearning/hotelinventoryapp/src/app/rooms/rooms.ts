@@ -9,6 +9,7 @@ import {
   ViewChild,
   ViewChildren,
   Self,
+  inject,
 } from '@angular/core';
 import { Room, RoomList } from './iRooms';
 import { RoomsListComponent } from './rooms-list/rooms-list';
@@ -16,9 +17,19 @@ import { RoomsListComponent } from './rooms-list/rooms-list';
 import { CommonModule } from '@angular/common';
 import { Header } from '../header/header';
 import { RoomsService } from './services/rooms';
-import { Observable } from 'rxjs';
+import {
+  asyncScheduler,
+  catchError,
+  map,
+  Observable,
+  of,
+  scheduled,
+  Subject,
+  Subscription,
+} from 'rxjs';
 import { signal } from '@angular/core';
 import { HttpEventType } from '@angular/common/http';
+
 @Component({
   selector: 'hinv-rooms',
   imports: [RoomsListComponent, CommonModule, Header],
@@ -27,6 +38,7 @@ import { HttpEventType } from '@angular/common/http';
   // providers: [RoomsService], >-- used for an instance for that component, leave it out if you only need a single instance at the root
 })
 export class RoomsComponent implements OnInit, AfterViewInit, AfterViewChecked, OnDestroy {
+  roomsService: RoomsService = inject(RoomsService);
   hotelName = 'Hilton Hotel';
   numberOfRooms = 10;
   hideRooms = true;
@@ -41,25 +53,46 @@ export class RoomsComponent implements OnInit, AfterViewInit, AfterViewChecked, 
   };
 
   roomList = signal<RoomList[]>([]);
-
   totalBytes = signal<number>(0);
 
+  subscription!: Subscription;
+
+  // $ => stream
+  error$: Subject<string> = new Subject<string>();
+  getError$ = this.error$.asObservable();
+
+  rooms$ = this.roomsService.getRoom$.pipe(
+    catchError((err) => {
+      // console.log(err);
+      this.error$.next(err.message);
+      return scheduled([[]], asyncScheduler);
+    })
+  );
+
+  roomsCount$ = this.roomsService.getRoom$.pipe(map((rooms) => rooms.length));
+
   //Observable
-  // stream = new Observable<string>((observer) => {
-  //   observer.next('user1');
-  //   observer.next('user2');
-  //   observer.next('user3');
-  //   observer.complete();
-  //   observer.error('observable error');
-  // });
+  stream = new Observable<string>((observer) => {
+    observer.next('user1');
+    observer.next('user2');
+    observer.next('user3');
+    observer.complete();
+    observer.error('observable error');
+  });
 
   @ViewChild(Header, { static: true }) headerComponent!: Header;
   // @ViewChildren(Header) headerChildrenComponent!: QueryList<Header>;
 
-  constructor(private roomsService: RoomsService) {}
+  constructor() {
+    // console.log(this.rooms$);
+  }
 
   ngOnDestroy(): void {
     console.log('Rooms: OnDestroy is called!!!!!');
+    console.log(this.subscription);
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   ngDoCheck(): void {
@@ -75,9 +108,10 @@ export class RoomsComponent implements OnInit, AfterViewInit, AfterViewChecked, 
     // });
     // this.stream.subscribe((data) => console.log(data));
 
-    this.roomsService.getRooms().subscribe((rooms) => {
-      this.roomList.set(rooms);
-    });
+    // this.subscription = this.roomsService.getRoom$.subscribe((rooms) => {
+    //   this.roomList.set(rooms);
+    // });
+    console.log(this.subscription);
 
     //example of a http request
     this.roomsService.getPhotos().subscribe((event) => {

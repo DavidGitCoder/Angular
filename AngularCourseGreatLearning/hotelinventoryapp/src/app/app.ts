@@ -8,8 +8,9 @@ import {
   ViewChild,
   ViewContainerRef,
   Inject,
+  inject,
 } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { RouterOutlet, RouterLinkWithHref } from '@angular/router';
 import { RoomsComponent } from './rooms/rooms';
 import { registerLocaleData } from '@angular/common';
 import localeFr from '@angular/common/locales/fr';
@@ -21,21 +22,29 @@ import { APP_CONFIG, APP_SERVICE_CONFIG } from './AppConfig/appconfig.service';
 import { localStorageToken } from './localstorage.token';
 import { sessionStorageToken } from './sessionstorage.token';
 import { provideHttpClient, withFetch } from '@angular/common/http';
+import { InitService } from './init.service';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 registerLocaleData(localeFr);
 
 @Component({
   selector: 'hinv-root',
-  imports: [RouterOutlet, RoomsComponent, CommonModule, Container, Employee],
-  providers: [
-    {
-      provide: APP_SERVICE_CONFIG,
-      useValue: APP_CONFIG,
-    },
+  imports: [
+    RouterOutlet,
+    RouterLinkWithHref,
+    RoomsComponent,
+    CommonModule,
+    Container,
+    Employee,
+    RouterLinkWithHref,
+    MatSlideToggleModule,
   ],
+  providers: [],
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
 export class App implements OnInit {
+  private initService = inject(InitService);
+
   protected readonly title = signal('hotelinventoryapp');
 
   role = 'Admin';
@@ -53,7 +62,9 @@ export class App implements OnInit {
     @Optional() private loggerService: Logger,
     @Inject(localStorageToken) private localStorage: Storage,
     @Inject(sessionStorageToken) private sessionStorage: Storage
-  ) {}
+  ) {
+    console.log(this.initService.config);
+  }
 
   ngOnInit(): void {
     this.loggerService?.log('AppComponent.ngOnInit()'); // ? is the ternary operator, in case the service is not available

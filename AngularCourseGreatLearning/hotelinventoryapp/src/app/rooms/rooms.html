@@ -1,5 +1,6 @@
 <!-- <p>Welcome to {{ hotelName }}</p> -->
 <hinv-header></hinv-header>
+<!-- {{ rooms$ | async | json }} -->
 <div [hidden]="hideRooms">
   Number of Rooms:
   <div
@@ -20,10 +21,11 @@
 </div>
 
 <!-- {{ roomList | json }} JSON Pipe to display objects -->
-
-@if(hideRooms){
+<h1>{{ getError$ | async }}</h1>
+<h1>Number of Rooms: {{ roomsCount$ | async }}</h1>
+@if ( rooms$ | async; as rooms){
 <hinv-rooms-list
-  [rooms]="roomList()"
+  [rooms]="rooms"
   [title]="title"
   (selectedRoom)="selectRoom($event)"
 ></hinv-rooms-list>

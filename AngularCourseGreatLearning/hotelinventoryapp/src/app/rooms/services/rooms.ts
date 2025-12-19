@@ -1,8 +1,9 @@
-import { Inject, Injectable } from '@angular/core';
-import { RoomList } from '../iRooms';
+import { Inject, Injectable, inject } from '@angular/core';
+import { Room, RoomList } from '../iRooms';
 import { AppConfig } from '../../AppConfig/appconfig.interface';
 import { APP_SERVICE_CONFIG } from '../../AppConfig/appconfig.service';
-import { HttpClient, HttpRequest } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
+import { shareReplay } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,11 @@ import { HttpClient, HttpRequest } from '@angular/common/http';
 export class RoomsService {
   roomList: RoomList[] = [];
 
-  constructor(@Inject(APP_SERVICE_CONFIG) private config: AppConfig, private http: HttpClient) {
+  private http = inject(HttpClient);
+  // headers = new HttpHeaders({ token: '12345WhatsUp', mickey: 'mouse', donald: 'duck' });
+  getRoom$ = this.http.get<RoomList[]>('api/rooms').pipe(shareReplay(1));
+
+  constructor(@Inject(APP_SERVICE_CONFIG) private config: AppConfig) {
     // console.log(this.config.apiEndpoint);
     console.log('Rooms Service intialized...');
   }
