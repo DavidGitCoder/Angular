@@ -11,10 +11,11 @@ import {
 } from '@angular/core';
 import { RoomList } from '../iRooms';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'hinv-rooms-list',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './rooms-list.html',
   styleUrl: './rooms-list.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -24,6 +24,7 @@ import { sessionStorageToken } from './sessionstorage.token';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { InitService } from './init.service';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { AppNavComponent } from './app-nav/app-nav.component';
 registerLocaleData(localeFr);
 
 @Component({
@@ -37,6 +38,7 @@ registerLocaleData(localeFr);
     Employee,
     RouterLinkWithHref,
     MatSlideToggleModule,
+    AppNavComponent,
   ],
   providers: [],
   templateUrl: './app.html',
@@ -48,7 +50,7 @@ export class App implements OnInit {
   protected readonly title = signal('hotelinventoryapp');
 
   role = 'Admin';
-
+  hotelName = 'Hotel California';
   //   @ViewChild('user', { read: ViewContainerRef }) vcr!: ViewContainerRef;
   //   ngAfterViewInit(): void {
   //     const componentRef = this.vcr.createComponent(RoomsComponent);
