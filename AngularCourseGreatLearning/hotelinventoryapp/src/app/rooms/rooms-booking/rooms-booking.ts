@@ -13,9 +13,11 @@ export class RoomsBooking implements OnInit {
   private router = inject(ActivatedRoute);
 
   id?: number;
-  id$?: Observable<void> = this.router.paramMap.pipe(map((params) => {
-      params.get('id')
-    }));
+  id$?: Observable<void> = this.router.paramMap.pipe(
+    map((params) => {
+      params.get('id');
+    })
+  );
   // params$ = new Observable();
 
   ngOnInit(): void {
@@ -23,6 +25,5 @@ export class RoomsBooking implements OnInit {
     // this.id$ = this.router.params.pipe(map((params) => Number(params['id'])));
     // this.router.paramMap.subscribe((params) => {
     //   params.get('id');
-    });
   }
 }

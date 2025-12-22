@@ -1,0 +1,63 @@
+<!-- value:{{ login.value | json }} 
+valid:{{ login.valid | json }} 
+invalid:{{  login.invalid | json}}
+pristine:{{ login.pristine | json }} -->
+<form #login="ngForm" (ngSubmit)="Login()">
+  <div class="mb-3">
+    <input
+      required
+      email
+      #loginemail="ngModel"
+      type="email"
+      class="form-control"
+      name="email"
+      [(ngModel)]="email"
+      placeholder="Provide your email"
+    />
+    @if(loginemail.dirty && loginemail.errors?.['email']){
+    <div class="alert alert-danger">Email should be similar to: johndoe@gmail.com</div>
+    }
+    <!-- {{ loginemail.errors | json }} -->
+  </div>
+  <div class="mb-3 position-relative">
+    <input
+      required
+      minlength="12"
+      maxlength="64"
+      #passwordlogin="ngModel"
+      [type]="showPassword ? 'text' : 'password'"
+      class="form-control"
+      name="password"
+      [(ngModel)]="password"
+      placeholder="Enter your password"
+    />
+    <button
+      type="button"
+      class="btn position-absolute top-50 end-0 translate-middle-y me-3 p-0 border-0 bg-transparent"
+      (click)="togglePassword()"
+      aria-label="Toggle password visibility"
+    >
+      <i [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
+    </button>
+  </div>
+  @if(passwordlogin.dirty && passwordlogin.errors?.['minlength']){
+  <div class="alert alert-danger">Email should be min 12 chars and max 64 chars</div>
+  }
+  <div class="mb-3">
+    <button [disabled]="login.invalid" class="btn btn-primary" type="submit">Login</button>
+  </div>
+</form>
+<script>
+  function togglePassword() {
+    const password = document.getElementById('password');
+    const icon = document.getElementById('toggleIcon');
+
+    if (password.type === 'password') {
+      password.type = 'text';
+      icon.classList.replace('bi-eye', 'bi-eye-slash');
+    } else {
+      password.type = 'password';
+      icon.classList.replace('bi-eye-slash', 'bi-eye');
+    }
+  }
+</script>

@@ -1,0 +1,106 @@
+{{ roomsForm.pristine | json }}
+{{ roomsForm.valid | json }}
+{{ roomsForm.dirty | json }}
+{{ roomsForm.invalid | json }}
+{{ roomsForm.value | json }}
+
+@if(successMessage()!==''){
+<div class="alert alert-success" role="alert">
+  {{ successMessage() }}
+</div>
+}
+
+<form #roomsForm="ngForm" (ngSubmit)="AddRoom(roomsForm)">
+  <div>
+    <h1>ADD ROOM</h1>
+  </div>
+  <div class="mb-3">
+    <input
+      #roomtype="ngModel"
+      required
+      minlength="5"
+      maxlength="20"
+      class="form-control"
+      type="text"
+      name="roomType"
+      [(ngModel)]="room.roomType"
+      placeholder="Room Type"
+    />
+    <small id="roomTypeHelp" class="form-text text-muted">Standard, Suite, Luxury...</small>
+    @if(roomtype.dirty && roomtype.errors?.['minlength']){
+    <div class="alert alert-danger">Room type should be min 5 chars and max 20 chars</div>
+    } @if(roomtype.dirty && roomtype.errors?.['required']){
+    <div class="alert alert-danger">Please provide the room type</div>
+    }
+  </div>
+  <div class="mb-3">
+    <input
+      required
+      class="form-control"
+      type="text"
+      name="roomAmenities"
+      [(ngModel)]="room.amenities"
+      placeholder="Amenities"
+    />
+    <small id="amenitiesHelp" class="form-text text-muted">A/C, Bar, Sauna...</small>
+  </div>
+  <div class="mb-3">
+    <input
+      required
+      class="form-control"
+      type="number"
+      name="roomPrice"
+      [(ngModel)]="room.price"
+      placeholder="Room Price per night"
+    />
+  </div>
+  <div class="mb-3">
+    <input
+      required
+      class="form-control"
+      type="datetime-local"
+      name="roomCheckin"
+      [ngModel]="toDateTimeLocal(room.checkinTime)"
+      placeholder="Check-in Time"
+    />
+  </div>
+  <div class="mb-3">
+    <input
+      required
+      class="form-control"
+      type="datetime-local"
+      name="roomCheckout"
+      [ngModel]="toDateTimeLocal(room.checkinTime)"
+      placeholder="Check-out Time"
+    />
+  </div>
+  <div class="mb-3">
+    <input
+      #roomrating="ngModel"
+      required
+      min="1"
+      max="5"
+      class="form-control"
+      type="number"
+      name="roomRating"
+      [(ngModel)]="room.rating"
+      placeholder="Rating"
+    />
+    @if(roomrating.dirty && (roomrating.errors?.["min"]||roomrating.errors?.["max"])){
+    <div class="alert alert-danger">Min is 1 and max is 5</div>
+    }
+  </div>
+  <div class="mb-3">
+    <input
+      required
+      class="form-control"
+      type="url"
+      name="roomPhotos"
+      [(ngModel)]="room.photos"
+      placeholder="Photos (Provide link)"
+    />
+  </div>
+  <div>
+    <button [disabled]="roomsForm.invalid" class="btn btn-primary" type="submit">Submit</button>
+  </div>
+</form>
